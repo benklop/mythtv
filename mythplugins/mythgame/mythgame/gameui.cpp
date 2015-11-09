@@ -661,7 +661,7 @@ QString GameUI::getFillSql(MythGenericTree *node) const
     RomInfo *romInfo = node->GetData().value<RomInfo *>();
 
     QString columns;
-    QString conj = "where ";
+    QString conj = "where";
 
     if (!filter.isEmpty())
     {
@@ -670,9 +670,10 @@ QString GameUI::getFillSql(MythGenericTree *node) const
     }
     if ((childLevel == "gamename") && (m_gameShowFileName))
     {
-        columns = childIsLeaf
-                    ? "romname,system,year,genre,gamename"
-                    : "romname";
+        if(childIsLeaf)
+            columns = " romname,system,year,genre,gamename ";
+        else
+            columns = " romname ";
 
         if (m_showHashed)
             filter += " and romname like '" + layer + "%'";
@@ -680,24 +681,26 @@ QString GameUI::getFillSql(MythGenericTree *node) const
     }
     else if ((childLevel == "gamename") && (layer.length() == 1))
     {
-        columns = childIsLeaf
-                    ? childLevel + ",system,year,genre,gamename"
-                    : childLevel;
+        if(childIsLeaf)
+            columns = " gamename,system,year,genre,gamename ";
+        else
+            columns = " gamename ";
 
         if (m_showHashed)
-            filter += " and gamename like '" + layer + "%'";
+            filter += " and gamename like '" + layer + "%' ";
 
     }
     else if (childLevel == "hash")
     {
-        columns = "left(gamename,1)";
+        columns = " left(gamename,1) ";
     }
     else
     {
 
-        columns = childIsLeaf
-                    ? childLevel + ",system,year,genre,gamename"
-                    : childLevel;
+        if(childIsLeaf)
+            columns = childLevel + ",system,year,genre,gamename ";
+        else
+            columns = childLevel;
     }
 
     //  this whole section ought to be in rominfo.cpp really, but I've put it
@@ -769,7 +772,7 @@ QString GameUI::getFillSql(MythGenericTree *node) const
                 + ";";
     }
 
-    return sql;
+    return sql.simplified();
 }
 
 QString GameUI::getChildLevelString(MythGenericTree *node) const
