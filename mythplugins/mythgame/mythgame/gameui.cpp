@@ -661,7 +661,7 @@ QString GameUI::getFillSql(MythGenericTree *node) const
     RomInfo *romInfo = node->GetData().value<RomInfo *>();
 
     QString columns;
-    QString conj = "where";
+    QString conj = "where ";
 
     if (!filter.isEmpty())
     {
@@ -671,9 +671,9 @@ QString GameUI::getFillSql(MythGenericTree *node) const
     if ((childLevel == "gamename") && (m_gameShowFileName))
     {
         if(childIsLeaf)
-            columns = " romname,system,year,genre,gamename ";
+            columns = "romname,system,year,genre,gamename";
         else
-            columns = " romname ";
+            columns = "romname";
 
         if (m_showHashed)
             filter += " and romname like '" + layer + "%'";
@@ -682,23 +682,23 @@ QString GameUI::getFillSql(MythGenericTree *node) const
     else if ((childLevel == "gamename") && (layer.length() == 1))
     {
         if(childIsLeaf)
-            columns = " gamename,system,year,genre,gamename ";
+            columns = "gamename,system,year,genre,gamename";
         else
             columns = " gamename ";
 
         if (m_showHashed)
-            filter += " and gamename like '" + layer + "%' ";
+            filter += " and gamename like '" + layer + "%'";
 
     }
     else if (childLevel == "hash")
     {
-        columns = " left(gamename,1) ";
+        columns = "left(gamename,1)";
     }
     else
     {
 
         if(childIsLeaf)
-            columns = childLevel + ",system,year,genre,gamename ";
+            columns = childLevel + ",system,year,genre,gamename";
         else
             columns = childLevel;
     }
